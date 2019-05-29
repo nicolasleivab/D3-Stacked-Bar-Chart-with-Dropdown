@@ -5,24 +5,28 @@ function init() {
                        console.log(data)
                        
 //** D3 js script **//
-// Filter user ID
+//** D3 js script **//
+var margin = { left:80, right:150, top:50, bottom:100 };
+
+var width = 750 - margin.left - margin.right,
+    height = 350 - margin.top - margin.bottom;
+
+// filter user ID
     var data = data.filter(function(d){return d.ID == '10574525';});
-// Create svg
-var svg = d3.select("svg"),
-    margin = {left:80, right:150, top:50, bottom:100},
-    width = +svg.attr("width") - margin.left - margin.right,
-    height = +svg.attr("height") - margin.top - margin.bottom,
-    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    // Get every column value
 
-        // Get every column value
-    var elements = Object.keys(data[0])
-        .filter(function(d){
-            return ((d != "ID") & (d != "date") & (d != "level") & (d != "Best Solution") & (d != "Rounds") & 
-              (d != "Playtime (min)") & (d != "Instructions") & (d != "Success Probability"));
-        });
-    var selection = elements[0];
+    
 
-    console.log(elements);
+var g = d3.select("#barstacked")
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
+
+
+  
+
 
 // X scale
 var x = d3.scaleBand()
@@ -54,7 +58,7 @@ var z = d3.scaleOrdinal(d3.schemePastel1);;
 
   var keys = ['Functions', 'Loops', 'PickDrop', 'Movement'];
 
-  // Set domains and create visualization 
+  // Set domains and create viz
   x.domain(data.map(function(d) { return d.level; }));
   y.domain([0, d3.max(data, function(d) { return d.Instructions; })]).nice();
   z.domain(keys);
@@ -71,14 +75,8 @@ var z = d3.scaleOrdinal(d3.schemePastel1);;
       .attr("y", function(d) { return y(d[1]); })
       .attr("height", function(d) { return y(d[0]) - y(d[1]); })
       .attr("width", x.bandwidth())
-    .on("mouseover", function() { tooltip.style("display", null); })
-    .on("mouseout", function() { tooltip.style("display", "none"); })
-    .on("mousemove", function(d) {
-      var xPosition = d3.mouse(this)[0] - 5;
-      var yPosition = d3.mouse(this)[1] - 5;
-      tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-      tooltip.select("text").text(d[1]-d[0]);
-    });
+
+         
 
   g.append("g")
       .attr("class", "axis")
@@ -123,23 +121,8 @@ var z = d3.scaleOrdinal(d3.schemePastel1);;
       .text(function(d) { return d; });
 
 
-  // Tooltips
-  var tooltip = svg.append("g")
-    .attr("class", "tooltip")
-    .style("display", "none");
-      
-  tooltip.append("rect")
-    .attr("width", 60)
-    .attr("height", 20)
-    .attr("fill", "white")
-    .style("opacity", 0.5);
 
-  tooltip.append("text")
-    .attr("x", 30)
-    .attr("dy", "1.2em")
-    .style("text-anchor", "middle")
-    .attr("font-size", "12px")
-    .attr("font-weight", "bold");
+
 
 
             //** end of D3 script **//

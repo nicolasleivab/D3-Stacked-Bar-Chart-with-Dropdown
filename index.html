@@ -1,21 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<style>
-body {
-  font-family: 'Open Sans', sans-serif;
-}
-#main {
-  width: 960px;
-}
-.axis .domain {
-  display: none;
-}
-</style>
-<div id="main">
-<svg width="700" height="350"></svg>
-</div>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <title>D3 Stacked Bar Chart</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Custom styling -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
 
+<body>
+
+    <nav class="navbar navbar-default">
+        <div class="container"> 
+            <h2 class="title"></h2>
+            
+        </div>
+    </nav>
+
+    <!-- Bootstrap grid setup -->
+    <div class="container">
+        <div class="row">
+       
+        <div class="col-sm-8" id="drop2" align=center></div>
+        </div>
+                <div class="row">
+                <div class="col-sm-8" id="drop2"></div>
+                </div>
+                <div class="row">
+            <div class ="col-sm-8" id="barstacked"></div>
+            </div>
+        </div>
+
+
+<!-- External JS libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.4.3/tabletop.js"></script>  
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <script src="js/d3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.4.3/tabletop.js"></script>
-<script src="js/stackedbarchart.js"></script>
-    </html>
+
+
+<!-- Custom JS -->
+    <script src="js/stackedbarchart.js"></script>
+    
+
+
+</body>
+
+
+
+
+
+
+
+
+
