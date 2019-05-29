@@ -66,6 +66,17 @@ var z = d3.scaleOrdinal(d3.schemePastel1);;
         d.PickDrop = +d.PickDrop;
         d["Success Probability"] = +d["Success Probability"];
         d.Cycles = +d.Cycles;
+        d.minL = +d.minL;
+        d.avgL = +d.avgL;
+        d.minF = +d.minF;
+        d.avgF = +d.avgF;
+        d.minC = +d.minC;
+        d.avgC = +d.avgC; 
+        d.minP = +d.minP;
+        d.avgP = +d.avgP;
+        d.minM = +d.minM;
+        d.avgM = +d.avgM;
+
     });
 
     var t = d3.transition().duration(750);
@@ -82,26 +93,42 @@ function update2(data){
             selection2 = document.getElementById("dropdown");
 
             if(selection2.value == 'Loops'){
-              var keys = ['Loops'];
+              var keys = ['Loops', 'minL', 'avgL'];
+              var minLmax = d3.max(data, function(d) { return d.minL; })
+              var avgLmax = d3.max(data, function(d) { return d.avgL; })
+              y.domain([0, d3.max(data, function(d) { return d[selection2.value] + avgLmax + minLmax;})]);
+
             }
             else if(selection2.value == 'Functions'){
-             var keys = ['Functions']; 
+             var keys = ['Functions', 'minF', 'avgF']; 
+              var minFmax = d3.max(data, function(d) { return d.minF; })
+              var avgFmax = d3.max(data, function(d) { return d.avgF; })
+              y.domain([0, d3.max(data, function(d) { return d[selection2.value] + avgFmax + minFmax;})]);
             }
             else if(selection2.value == 'Cycles'){
-             var keys = ['Cycles']; 
+             var keys = ['Cycles', 'minC', 'avgC'];
+              var minCmax = d3.max(data, function(d) { return d.minC; })
+              var avgCmax = d3.max(data, function(d) { return d.avgC; })
+              y.domain([0, d3.max(data, function(d) { return d[selection2.value] + avgCmax + minCmax;})]);
             }
             else if(selection2.value == 'PickDrop'){
-             var keys = ['PickDrop']; 
+             var keys = ['PickDrop', 'minP', 'avgP'];
+                var minPmax = d3.max(data, function(d) { return d.minP; })
+              var avgPmax = d3.max(data, function(d) { return d.avgP; })
+              y.domain([0, d3.max(data, function(d) { return d[selection2.value] + avgPmax + minPmax;})]);
             }
             else if(selection2.value == 'Movement'){
-             var keys = ['Movement']; 
+             var keys = ['Movement', 'minM', 'avgM'];
+             var minMmax = d3.max(data, function(d) { return d.minM; })
+              var avgMmax = d3.max(data, function(d) { return d.avgM; })
+              y.domain([0, d3.max(data, function(d) { return d[selection2.value] + avgMmax + minMmax;})]);
             }
   
   console.log(selection2.value)
 
   // Set domains and create viz
   
-  y.domain([0, d3.max(data, function(d) { return d[selection2.value]; })]);
+  
   z.domain(keys);
 
              // JOIN new data with old elements.
@@ -112,7 +139,7 @@ function update2(data){
 
                      // EXIT old elements not present in new data.
     rects.exit()
-        .attr("fill", "z")
+        .attr("fill", z)
     .transition(t)
         .attr("y", y(0))
         .attr("height", 0)
