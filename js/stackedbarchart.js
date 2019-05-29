@@ -17,7 +17,9 @@ var width = 750 - margin.left - margin.right,
     var elements2 = Object.keys(data[0])
         .filter(function(d){
             return ((d != "ID") & (d != "level") & (d != "date") & (d != "Best Solution") & (d != "Rounds") &
-               (d != "Playtime (min)") & (d != "Success Probability") & (d != "Instructions"));
+               (d != "Playtime (min)") & (d != "Success Probability") & (d != "Instructions")&
+               (d != "avgL") & (d != "minL") & (d != "avgF") & (d != "minF") & (d != "avgM") &
+               (d != "minM") & (d != "avgC") & (d != "minC") & (d != "avgP") & (d != "minP"));
         });
     var selection2 = elements2[0];
 
@@ -139,7 +141,7 @@ function update2(data){
 
                      // EXIT old elements not present in new data.
     rects.exit()
-        .attr("fill", z)
+        .attr("fill", 'none')
     .transition(t)
         .attr("y", y(0))
         .attr("height", 0)
