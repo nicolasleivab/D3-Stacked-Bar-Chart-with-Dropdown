@@ -161,26 +161,7 @@ rects.enter()
       .attr("y", function(d) { return y(d[1]); })
       .attr("height", function(d) { return y(d[0]) - y(d[1]); })
       .attr("width", x.bandwidth())
-  var legend = g.append("g")
-      .attr("font-family", "sans-serif")
-      .attr("font-size", 10)
-      .attr("text-anchor", "end")
-    .selectAll("g")
-    .data(keys.slice().reverse())
-    .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(0," + i * 30 + ")"; });
 
-  legend.append("rect")            //legend svgs
-      .attr("x", width + 50)
-      .attr("width", 19)
-      .attr("height", 19)
-      .attr("fill", z);
-
-  legend.append("text")              // legend text
-      .attr("x", width  + 45)
-      .attr("y", 9.5)
-      .attr("dy", "0.32em")
-      .text(function(d) { return d; });
         
 
     // Y Axis
@@ -216,8 +197,29 @@ rects.enter()
         .tickFormat(function(d){ return d; });
     yAxisGroup.transition(t).call(yAxisCall);
 
-}
 
+}
+let keys = ['Your Score', 'Min', 'Average'];
+      var legend = g.append("g")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", 10)
+      .attr("text-anchor", "end")
+    .selectAll("g")
+    .data(keys)
+    .enter().append("g")
+      .attr("transform", function(d, i) { return "translate(0," + i * 30 + ")"; });
+
+  legend.append("rect")            //legend svgs
+      .attr("x", width + 50)
+      .attr("width", 19)
+      .attr("height", 19)
+      .attr("fill", z);
+
+  legend.append("text")              // legend text
+      .attr("x", width  + 45)
+      .attr("y", 9.5)
+      .attr("dy", "0.32em")
+      .text(function(d) { return d; });
 
 
             //** end of D3 script **//
