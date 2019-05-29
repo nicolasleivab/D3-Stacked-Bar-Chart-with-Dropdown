@@ -14,14 +14,14 @@ var width = 750 - margin.left - margin.right,
 // filter user ID
     var data = data.filter(function(d){return d.ID == '10574525';});
     // Filter the data for the dropdown selector
-    var elements = Object.keys(data[0])
+    var elements2 = Object.keys(data[0])
         .filter(function(d){
             return ((d != "ID") & (d != "level") & (d != "date") & (d != "Best Solution") & (d != "Rounds") &
                (d != "Playtime (min)") & (d != "Success Probability") & (d != "Instructions"));
         });
-    var selection = elements[0];
+    var selection2 = elements2[0];
 
-    console.log(elements);
+    console.log(elements2);
 
 var g = d3.select("#barstacked")
     .append("svg")
@@ -66,11 +66,33 @@ var z = d3.scaleOrdinal(d3.schemePastel1);;
 update2(data);
 
 function update2(data){
-  var keys = ['Functions', 'Loops', 'PickDrop', 'Movement'];
+                var selector = d3.select("#drop2") //dropdown change selection
+        .append("select")
+        .attr("id","dropdown")
+        .on("change", function(d){
+            selection2 = document.getElementById("dropdown");
+
+            if(selection2.value == 'Loops'){
+              var keys = ['Loops'];
+            }
+            else if(selection2.value == 'Functions'){
+             var keys = ['Functions']; 
+            }
+            else if(selection2.value == 'Cycles'){
+             var keys = ['Cycles']; 
+            }
+            else if(selection2.value == 'PickDrop'){
+             var keys = ['PickDrop']; 
+            }
+            else if(selection2.value == 'Movement'){
+             var keys = ['Movement']; 
+            }
+  
+  console.log(selection2.value)
 
   // Set domains and create viz
   x.domain(data.map(function(d) { return d.level; }));
-  y.domain([0, d3.max(data, function(d) { return d.Instructions; })]).nice();
+  y.domain([0, d3.max(data, function(d) { return d[selection2.value]; })]).nice();
   z.domain(keys);
 
   g.append("g")
@@ -86,7 +108,7 @@ function update2(data){
       .attr("height", function(d) { return y(d[0]) - y(d[1]); })
       .attr("width", x.bandwidth())
 
-         
+        
 
   g.append("g")
       .attr("class", "axis")
@@ -129,7 +151,17 @@ function update2(data){
       .attr("y", 9.5)
       .attr("dy", "0.32em")
       .text(function(d) { return d; });
-
+}); 
+        //get values for the dropdown
+    selector.selectAll("option")
+      .data(elements2)
+      .enter().append("option")
+      .attr("value", function(d){
+        return d;
+      })
+      .text(function(d){
+        return d;
+      })
 
 }
 
