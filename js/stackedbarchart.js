@@ -13,9 +13,15 @@ var width = 750 - margin.left - margin.right,
 
 // filter user ID
     var data = data.filter(function(d){return d.ID == '10574525';});
-    // Get every column value
+    // Filter the data for the dropdown selector
+    var elements = Object.keys(data[0])
+        .filter(function(d){
+            return ((d != "ID") & (d != "level") & (d != "date") & (d != "Best Solution") & (d != "Rounds") &
+               (d != "Playtime (min)") & (d != "Success Probability") & (d != "Instructions"));
+        });
+    var selection = elements[0];
 
-    
+    console.log(elements);
 
 var g = d3.select("#barstacked")
     .append("svg")
@@ -56,6 +62,10 @@ var z = d3.scaleOrdinal(d3.schemePastel1);;
         d.Cycles = +d.Cycles;
     });
 
+
+update2(data);
+
+function update2(data){
   var keys = ['Functions', 'Loops', 'PickDrop', 'Movement'];
 
   // Set domains and create viz
@@ -121,7 +131,7 @@ var z = d3.scaleOrdinal(d3.schemePastel1);;
       .text(function(d) { return d; });
 
 
-
+}
 
 
 
