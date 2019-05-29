@@ -32,7 +32,12 @@ var g = d3.select("#barstacked")
 
 
   
+var xAxisGroup = g.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height +")");
 
+var yAxisGroup = g.append("g")
+    .attr("class", "y axis");
 
 // X scale
 var x = d3.scaleBand()
@@ -49,6 +54,7 @@ var z = d3.scaleOrdinal(d3.schemePastel1);;
 
 
 
+
        // Clean data
     data.forEach(function(d) {
         d.Rounds = +d.Rounds;
@@ -62,10 +68,13 @@ var z = d3.scaleOrdinal(d3.schemePastel1);;
         d.Cycles = +d.Cycles;
     });
 
+    var t = d3.transition().duration(750);
+
 
 update2(data);
 
 function update2(data){
+
                 var selector = d3.select("#drop2") //dropdown change selection
         .append("select")
         .attr("id","dropdown")
@@ -91,10 +100,25 @@ function update2(data){
   console.log(selection2.value)
 
   // Set domains and create viz
-  x.domain(data.map(function(d) { return d.level; }));
-  y.domain([0, d3.max(data, function(d) { return d[selection2.value]; })]).nice();
+  
+  y.domain([0, d3.max(data, function(d) { return d[selection2.value]; })]);
   z.domain(keys);
 
+             // JOIN new data with old elements.
+    var rects = g.selectAll("rect")
+        .data(data, function(d){
+            return d.level;
+        });
+
+                     // EXIT old elements not present in new data.
+    rects.exit()
+        .attr("fill", "z")
+    .transition(t)
+        .attr("y", y(0))
+        .attr("height", 0)
+        .remove();
+        // ENTER new elements present in new data...
+rects.enter()
   g.append("g")
     .selectAll("g")
     .data(d3.stack().keys(keys)(data))
@@ -103,34 +127,13 @@ function update2(data){
     .selectAll("rect")
     .data(function(d) { return d; })
     .enter().append("rect")
+    // AND UPDATE old elements present in new data.
+            .merge(rects)
+            .transition(t)
       .attr("x", function(d) { return x(d.data.level); })
       .attr("y", function(d) { return y(d[1]); })
       .attr("height", function(d) { return y(d[0]) - y(d[1]); })
       .attr("width", x.bandwidth())
-
-        
-
-  g.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x)).selectAll("text") 
-            .style("text-anchor", "end")
-            .attr("dx", "-.8em")
-            .attr("dy", ".15em")
-            .attr("transform", "rotate(-40)" 
-                );;;;
-
-  g.append("g")
-      .attr("class", "axis")
-      .call(d3.axisLeft(y).ticks(null, "s"))
-    .append("text")
-      .attr("x", 2)
-      .attr("y", y(y.ticks().pop()) + 0.5)
-      .attr("dy", "0.32em")
-      .attr("fill", "#000")
-      .attr("font-weight", "bold")
-      .attr("text-anchor", "start");
-
   var legend = g.append("g")
       .attr("font-family", "sans-serif")
       .attr("font-size", 10)
@@ -151,6 +154,15 @@ function update2(data){
       .attr("y", 9.5)
       .attr("dy", "0.32em")
       .text(function(d) { return d; });
+        
+
+    // Y Axis
+    var yAxisCall = d3.axisLeft(y)
+        .tickFormat(function(d){ return d; });
+    yAxisGroup.transition(t).call(yAxisCall);
+
+
+
 }); 
         //get values for the dropdown
     selector.selectAll("option")
@@ -162,6 +174,20 @@ function update2(data){
       .text(function(d){
         return d;
       })
+
+      x.domain(data.map(function(d) { return d.level; }));
+    // X Axis
+    var xAxisCall = d3.axisBottom(x);
+    xAxisGroup.transition(t).call(xAxisCall).selectAll("text") 
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", "rotate(-40)" 
+                );;;
+ // Y Axis
+    var yAxisCall = d3.axisLeft(y)
+        .tickFormat(function(d){ return d; });
+    yAxisGroup.transition(t).call(yAxisCall);
 
 }
 
