@@ -1,6 +1,6 @@
 //** tabletop init function **//
 function init() {     
-  Tabletop.init( { key: '10g_TGtruCriERlXJurPZQk76pvk30U0pkWgbbfzPrjA', //google sheet key
+  Tabletop.init( { key: '1evjoQPchLR8iUhjQQ8i56hy6Df5z7K_eVSWs8yVugC4', //google sheet key
                    callback: function(data, tabletop) { 
                        console.log(data)
                        
@@ -14,13 +14,7 @@ var width = 750 - margin.left - margin.right,
 // filter user ID
     var data = data.filter(function(d){return d.ID == '10574525';});
     // Filter the data for the dropdown selector
-    var elements2 = Object.keys(data[0])
-        .filter(function(d){
-            return ((d != "ID") & (d != "level") & (d != "date") & (d != "Best Solution") & (d != "Rounds") &
-               (d != "Playtime (min)") & (d != "Success Probability") & (d != "Instructions")&
-               (d != "avgL") & (d != "minL") & (d != "avgF") & (d != "minF") & (d != "avgM") &
-               (d != "minM") & (d != "avgC") & (d != "minC") & (d != "avgP") & (d != "minP"));
-        });
+    var elements2 = ['Functions', 'Loops', 'Cycles', 'Movement', 'PickDrop', 'Instructions'];
     var selection2 = elements2[0];
 
     console.log(elements2);
